@@ -12,15 +12,15 @@ def create_parser():
   parser.add_argument('-md', '--table', action='store_true', help='Table Markdown')
   return parser
 
-def add_t(task):
+def add_t(tk):
   with open('tasks.txt', 'a') as file:
-#    task = task + ' | ' + str(datetime.date.today())
-#    task = ("{"+'"{desc}"'+"}","\n{"+'{date}'+"}".format(desc=task,date=str(datetime.date.today())))
-#    task = ('{curlya}"{desc}":{curly}{curlyb},{curlya}"{date}":{curly}{curlyb}'.format(
-    for index in enumerate(task, start=0):
+    for index in enumerate(tk, start=0):
         x = '#'+str(index)
-    task = ('task: {ta},;created @: {time}'.format(ta=task, time=str(datetime.date.today())))
+    task = ('task: {ta}'.format(ta=tk))
+    task2 = ('task: {ta}\ncreated @: {time}'.format(ta=tk, time=str(datetime.date.today())))
     file.write(task)
+    with open('tasks2.txt', 'a') as file:
+      file.write(task2)
 def list_t():
   if os.path.exists('tasks.txt'):
     with open('tasks.txt', 'r') as file:
@@ -43,9 +43,8 @@ def remove_t(index):
 
 def table_t():
   res = []
-  with open('tasks.txt', 'r') as file:
-    reader = csv.reader(file, delimiter=';')
-    #res = [{row[0].strip(): row[1].strip() for row in reader}]
+  with open('tasks2.txt', 'r') as file:
+    reader = csv.reader(file, delimiter=':')
     res = [{row[0].strip(): row[1].strip() for row in reader}]
   print(markdown_table(res).get_markdown())
 
